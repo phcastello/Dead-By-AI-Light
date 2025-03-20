@@ -29,10 +29,10 @@ BLACK = (0, 0, 0)
 # Criar o Killer e o Survivor com raio apropriado
 # TODO: Adicionar Spawn aleatório com margem de segurança do killer
 killer = Killer(100, 100, (255, 0, 0), 30, 3.5)
-# survivor = Survivor(300, 300, (0, 0, 255), 20, 3)
+survivor = Survivor(300, 300, (0, 0, 255), 20, 3)
 
 all_sprites = pygame.sprite.Group()
-all_sprites.add(killer)
+all_sprites.add(killer, survivor)
 
 # Loop Principal do Jogo
 running = True
@@ -53,7 +53,7 @@ while running:
 
     # Movimento dos personagens (usando normalização)
     killer.move(keys, pygame.K_w, pygame.K_a, pygame.K_s, pygame.K_d)
-    #survivor.move(keys, pygame.K_UP, pygame.K_LEFT, pygame.K_DOWN, pygame.K_RIGHT)
+    survivor.move(keys, pygame.K_UP, pygame.K_LEFT, pygame.K_DOWN, pygame.K_RIGHT)
 
     # Renderização
     screen.fill(WHITE)  # Fundo branco
