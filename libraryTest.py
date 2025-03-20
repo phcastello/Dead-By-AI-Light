@@ -1,3 +1,6 @@
+# If you want to test if the libraries are installed correctly, run this script.
+# It will test the following libraries: Pygame, PyTorch, NumPy, Matplotlib, NetworkX, and Gym.
+
 import pygame
 import torch
 import numpy as np
