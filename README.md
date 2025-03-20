@@ -43,7 +43,7 @@
 ## 🚀 How to Run the Game
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/DeadByAILight.git
+   git clone https://github.com/phcastello/DeadByAILight.git
    cd DeadByAILight
    ```
 2. Install dependencies:
