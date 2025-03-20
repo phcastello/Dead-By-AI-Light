@@ -38,7 +38,7 @@
 - **Pygame** (game rendering)
 - **NumPy** (mathematical operations for AI)
 - **Matplotlib** (AI progress visualization)
-- **TensorFlow/PyTorch** (AI training)
+- **PyTorch** (AI training)
 
 ## 🚀 How to Run the Game
 1. Clone the repository:
