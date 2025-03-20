@@ -12,7 +12,7 @@ class Character(pygame.sprite.Sprite):
         self.base_speed = speed
 
     def move(self, keys, up, left, down, right):
-        # TODO Killer não tem velocidade de 3.5 para cima e para esquerda, apenas para baixo e direita
+        # TODO BUG Killer não tem velocidade de 3.5 para cima e para esquerda, apenas para baixo e direita
         dy = (keys[down] - keys[up])
         dx = (keys[right] - keys[left])
 
