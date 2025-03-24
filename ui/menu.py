@@ -1,5 +1,5 @@
 import pygame
-import botao
+from ui import botao
 
 pygame.init()
 
@@ -22,12 +22,12 @@ font = pygame.font.SysFont("Courier", 30)
 TEXT_COL = (0,0,0)
 
 #Load nas imagens dos botoes
-start_img = pygame.image.load("ImagensMenu/start.png").convert_alpha()
-menu_img = pygame.image.load("ImagensMenu/menu.png").convert_alpha()
-pause_img = pygame.image.load("ImagensMenu/pause.png").convert_alpha()
-back_img = pygame.image.load("ImagensMenu/back.png").convert_alpha()
-quit_img = pygame.image.load("ImagensMenu/quit.png").convert_alpha()
-option_img = pygame.image.load("ImagensMenu/options.png").convert_alpha()
+start_img = pygame.image.load("/home/phcastello/Documentos/Dead_By_AI_light/ui/ImagensMenu/start.png").convert_alpha()
+menu_img = pygame.image.load("/home/phcastello/Documentos/Dead_By_AI_light/ui/ImagensMenu/menu.png").convert_alpha()
+pause_img = pygame.image.load("/home/phcastello/Documentos/Dead_By_AI_light/ui/ImagensMenu/pause.png").convert_alpha()
+back_img = pygame.image.load("/home/phcastello/Documentos/Dead_By_AI_light/ui/ImagensMenu/back.png").convert_alpha()
+quit_img = pygame.image.load("/home/phcastello/Documentos/Dead_By_AI_light/ui/ImagensMenu/quit.png").convert_alpha()
+option_img = pygame.image.load("/home/phcastello/Documentos/Dead_By_AI_light/ui/ImagensMenu/options.png").convert_alpha()
 
 #criar instancia dos botoes
 start_button = botao.Button(305, 125, start_img, 1)
@@ -42,46 +42,35 @@ def draw_text(text, font, text_col, x, y):
     img = font.render (text, True, text_col)
     screen.blit (img, (x,y))
 
-#Loop do jogo
-run = True
-while run:
+def show_menu(game_paused = False, menu_state = "main"):
+    #Loop do jogo
+    menu_state = "main"
+    running = True
 
-    #Cor do menu
-    screen.fill ((69, 144, 117))
+    while running:
+        screen.fill((69, 144, 117))
 
-    #Checar se o jogo está pausado
-    if game_paused == False:
         if menu_state == "main":
-            if start_button.draw(screen):
-                game_paused = True
-            if option_menu_button.draw(screen):
+            if start_button.draw(screen):  # Se clicar em Start
+                return True
+            if option_menu_button.draw(screen):  # Se clicar em Options
                 menu_state = "options"
-            if quit_button.draw(screen):
-                run = False
-        if menu_state == "options":
-            if back_button.draw(screen):
+            if quit_button.draw(screen):  # Se clicar em Quit
+                return False
+
+        elif menu_state == "options":
+            # Exibir texto na tela
+            draw_text("Você está na aba de opções", font, TEXT_COL, 200, 200)
+            if back_button.draw(screen):  # Voltar ao menu principal
                 menu_state = "main"
 
-    #Quando acontecer algum evento
-    if game_paused == True:
-        #Texto, Fonte, Cor, Posição X, Posição Y
-        draw_text ("Pressione ESC para pausar", font, TEXT_COL, 160, 250)
-        if option_pause_button.draw(screen):
-                menu_state = "options"
-        if menu_state == "options":
-            if back_button.draw(screen):
-                menu_state = "main"
-        
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN: #Keydown = uma tecla foi pressionada
-            if event.key == pygame.K_ESCAPE: #pygame.K_(Qualquer tecla)
-                print ("Esc")
-                game_paused = not game_paused
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
 
-        #Apertar o X da janela
-        if event.type == pygame.QUIT:
-            run = False
-    
-    pygame.display.update()
+        pygame.display.update()
 
-pygame.quit()
+if __name__ == "__main__":
+    show_menu()
+    pygame.quit()
+    exit()

@@ -1,7 +1,6 @@
 import pygame
-import math
-import random
 
+from ui.menu import show_menu
 from game.characters import *
 
 # Configurações iniciais
@@ -19,7 +18,7 @@ clock = pygame.time.Clock()
 # Cores
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-BCG_COLOR = (20,20,20)
+BCG_COLOR = (100,100,100)
 
 # Criar o Killer e o Survivor com raio apropriado
 killer = Killer(100, 100, 30, (255, 0, 0))
@@ -28,11 +27,16 @@ survivor = Survivor(300, 300, 20, (0, 0, 255))
 all_sprites = pygame.sprite.Group()
 all_sprites.add(killer, survivor)
 
+# Evitar que o jogo inicie sem passar pelo menu
+if not show_menu():
+    pygame.quit()
+    exit()
+
 # Loop Principal do Jogo
 running = True
 while running:
     clock.tick(FPS)
-    
+
     # Captura eventos
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
