@@ -7,6 +7,13 @@ FPS = 60  # Taxa de quadros por segundo
 
 pygame.init()
 
+# Full Screen
+# info = pygame.display.Info()  # Obtém informações sobre a resolução do monitor
+# WIDTH, HEIGHT = info.current_w, info.current_h
+# screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)  # Modo fullscreen
+# pygame.display.set_caption("Dead By AI light")
+# clock = pygame.time.Clock()
+
 # Configurações de tela
 WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
