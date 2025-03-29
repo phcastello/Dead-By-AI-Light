@@ -19,12 +19,12 @@ TEXT_COL = (0, 0, 0)  # Cor do texto
 
 # Carregamento das imagens dos botões
 # Cada botão tem uma imagem associada que será exibida na interface
-start_img = pygame.image.load("/home/phcastello/Documentos/Dead_By_AI_light/ui/ImagensMenu/start.png").convert_alpha()
-menu_img = pygame.image.load("/home/phcastello/Documentos/Dead_By_AI_light/ui/ImagensMenu/menu.png").convert_alpha()
-pause_img = pygame.image.load("/home/phcastello/Documentos/Dead_By_AI_light/ui/ImagensMenu/pause.png").convert_alpha()
-back_img = pygame.image.load("/home/phcastello/Documentos/Dead_By_AI_light/ui/ImagensMenu/back.png").convert_alpha()
-quit_img = pygame.image.load("/home/phcastello/Documentos/Dead_By_AI_light/ui/ImagensMenu/quit.png").convert_alpha()
-option_img = pygame.image.load("/home/phcastello/Documentos/Dead_By_AI_light/ui/ImagensMenu/options.png").convert_alpha()
+start_img = pygame.image.load("./assets/ImagensMenu/start.png").convert_alpha()
+menu_img = pygame.image.load("./assets/ImagensMenu/menu.png").convert_alpha()
+pause_img = pygame.image.load("./assets/ImagensMenu/pause.png").convert_alpha()
+back_img = pygame.image.load("./assets/ImagensMenu/back.png").convert_alpha()
+quit_img = pygame.image.load("./assets/ImagensMenu/quit.png").convert_alpha()
+option_img = pygame.image.load("./assets/ImagensMenu/options.png").convert_alpha()
 
 # Criação de instâncias dos botões
 # Cada botão é posicionado em coordenadas específicas
