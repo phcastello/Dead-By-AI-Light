@@ -2,6 +2,9 @@ import pygame
 
 from ui.menu import show_menu
 from game.characters import *
+from ui.menu import screen
+from ui.menu import SCREEN_HEIGHT
+from ui.menu import SCREEN_WIDTH
 
 FPS = 60  # Taxa de quadros por segundo
 
@@ -15,8 +18,8 @@ pygame.init()
 # clock = pygame.time.Clock()
 
 # Configurações de tela
-WIDTH, HEIGHT = 800, 600
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+#SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
+#screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Dead By AI light")
 clock = pygame.time.Clock()
 
@@ -34,7 +37,7 @@ all_sprites = pygame.sprite.Group()
 all_sprites.add(killer, survivor)
 
 # Exibe o menu antes de iniciar o jogo
-if not show_menu():
+if not show_menu(screen):
     pygame.quit()
     exit()
 
