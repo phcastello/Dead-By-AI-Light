@@ -2,6 +2,9 @@ import pygame
 
 from ui.menu import show_menu
 from game.characters import *
+from ui.menu import screen
+from ui.menu import SCREEN_HEIGHT
+from ui.menu import SCREEN_WIDTH
 
 FPS = 60  # Taxa de quadros por segundo
 
@@ -15,8 +18,8 @@ pygame.init()
 # clock = pygame.time.Clock()
 
 # Configurações de tela
-WIDTH, HEIGHT = 800, 600
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+#SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
+#screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Dead By AI light")
 clock = pygame.time.Clock()
 
@@ -25,8 +28,25 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BCG_COLOR = (100, 100, 100)  # Cor de fundo
 
+#Lista de paredes
+walls = [
+    pygame.Rect(200, 150, 400, 4),  #wall2
+    pygame.Rect(100, 300, 4, 200),  #wall1
+    pygame.Rect(0, 0, SCREEN_WIDTH, 10),  #Upper wall
+    pygame.Rect(0, SCREEN_HEIGHT - 10, SCREEN_WIDTH, 10),  #Lower wall
+    pygame.Rect(0, 0, 10, SCREEN_HEIGHT),  #Left wall
+    pygame.Rect(SCREEN_WIDTH - 10, 0, 10, SCREEN_HEIGHT), #Right wall
+    pygame.Rect(200, 150, 300, 4),  
+    pygame.Rect(400, 300, 4, 200),  
+    pygame.Rect(100, 450, 235, 4),  
+    pygame.Rect(600, 100, 4, 250),
+    pygame.Rect(300, 74, 200, 4),
+    pygame.Rect(400, 500, 250, 4) 
+]
+
+
 # Criação dos personagens
-killer = Killer(100, 100, (255, 0, 0), 30, 3.5)
+killer = Killer(100, 100, (255, 0, 0), 25, 3.5)
 survivor = Survivor(300, 300, (0, 0, 255), 20, 3)
 
 # Grupo de sprites
@@ -34,7 +54,7 @@ all_sprites = pygame.sprite.Group()
 all_sprites.add(killer, survivor)
 
 # Exibe o menu antes de iniciar o jogo
-if not show_menu():
+if not show_menu(screen):
     pygame.quit()
     exit()
 
@@ -65,8 +85,27 @@ while running:
     survivor_dy = keys[pygame.K_DOWN] - keys[pygame.K_UP]
 
     # Aplica o movimento dos personagens
-    killer.move(killer_dx, killer_dy)
-    survivor.move(survivor_dx, survivor_dy)
+    new_killer = killer.rect.move(killer_dx * killer.speed, killer_dy * killer.speed)
+    new_survivor = survivor.rect.move(survivor_dx * survivor.speed, survivor_dy * survivor.speed)
+
+    new_killer_x = killer.rect.move(killer_dx * killer.speed, 0)
+    new_survivor_x = survivor.rect.move(survivor_dx * survivor.speed, 0)
+
+    if not any(new_killer_x.colliderect(wall) for wall in walls):
+        killer.move(killer_dx, 0)  # Move apenas na horizontal
+
+    if not any(new_survivor_x.colliderect(wall) for wall in walls):
+        survivor.move(survivor_dx, 0)  # Move apenas na horizontal
+
+    # Testa movimento vertical (cima/baixo)
+    new_killer_y = killer.rect.move(0, killer_dy * killer.speed)
+    new_survivor_y = survivor.rect.move(0, survivor_dy * survivor.speed)
+
+    if not any(new_killer_y.colliderect(wall) for wall in walls):
+        killer.move(0, killer_dy)  # Move apenas na vertical
+
+    if not any(new_survivor_y.colliderect(wall) for wall in walls):
+        survivor.move(0, survivor_dy)  # Move apenas na vertical
 
     # Atualiza os personagens
     killer.update()
@@ -75,6 +114,10 @@ while running:
     # Renderização
     screen.fill(BCG_COLOR)  # Preenche o fundo
     all_sprites.draw(screen)  # Desenha os sprites
+    # Desenha as paredes
+    for wall in walls:
+        pygame.draw.rect(screen, (50, 50, 50), wall)
+
     
     pygame.display.flip()  # Atualiza a tela
 
