@@ -46,8 +46,8 @@ walls = [
 
 
 # Criação dos personagens
-killer = Killer(100, 100, (255, 0, 0), 25, 3.5)
-survivor = Survivor(300, 300, (0, 0, 255), 20, 3)
+killer = Killer(100, 100, (255, 0, 0), 20, 3.2)
+survivor = Survivor(300, 300, (0, 0, 255), 10, 3)
 
 # Grupo de sprites
 all_sprites = pygame.sprite.Group()
@@ -67,11 +67,15 @@ while running:
         if event.type == pygame.QUIT:  # Fecha o jogo
             running = False
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:  # Sai do jogo
-                running = False
-            elif event.key == pygame.K_SPACE:  # Modifica temporariamente a velocidade
+            if event.key == pygame.K_SPACE:
                 killer.change_speed_temp(1, 1, FPS)
                 survivor.change_speed_temp(4, 0.5, FPS)
+            attacked = killer.attack(survivor)
+            if attacked:
+                print("Sobrevivente atingido!")
+            else:
+                print("Errou o ataque.")
+
 
     # Captura teclas pressionadas
     keys = pygame.key.get_pressed()
@@ -107,6 +111,9 @@ while running:
     if not any(new_survivor_y.colliderect(wall) for wall in walls):
         survivor.move(0, survivor_dy)  # Move apenas na vertical
 
+    current_time = pygame.time.get_ticks()
+    killer.attack(survivor)
+
     # Atualiza os personagens
     killer.update()
     survivor.update()
@@ -114,8 +121,15 @@ while running:
     # Renderização
     screen.fill(BCG_COLOR)  # Preenche o fundo
     all_sprites.draw(screen)  # Desenha os sprites
-    # Desenha as paredes
-    for wall in walls:
+
+    # Desenha a espada se estiver atacando
+    if killer.show_sword:
+        sword_rotated = pygame.transform.rotate(killer.sword_img, -45)  # ou outro ângulo se quiser girar
+        sword_rect = sword_rotated.get_rect(center=(killer.x + 40, killer.y + 5))   # posição à frente do killer
+        screen.blit(sword_rotated, sword_rect)
+
+    
+    for wall in walls:          #Desenha as paredes
         pygame.draw.rect(screen, (50, 50, 50), wall)
 
     

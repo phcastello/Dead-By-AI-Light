@@ -59,22 +59,43 @@ class Character(pygame.sprite.Sprite):
 
 
 class Killer(Character):
-    def __init__(self, x, y, color, radius=20, speed=3.5):
+    def __init__(self, x, y, color, radius=20, speed=3.2):
         super().__init__(x, y, radius, color, speed)
         self.atk_range = 50
         self.atk_angle = 45 # TODO implementar depois hitbox apenas na frente do killer
         self.atk_cooldown = 60
         self.last_atk_time = 0
         self.grab_range = radius + 5
+
+        #Espada
+        self.sword_img = pygame.image.load("./assets/killer/espadaJogo.png").convert_alpha()
+        self.show_sword = False
+        self.sword_timer = 0
+        self.sword_duration = 15
     
-    def attack(self, target, current_time):
-        if current_time - self.last_atk_time >= self.atk_cooldown:
-            distance = math.hypot(target.x - self.x, target.y - self.y)
-            angle = math.degrees(math.atan2(target.y - self.y, target.x - self.x))
-            if distance <= self.atk_range and abs(angle) <= self.atk_angle / 2:
-                self.last_atk_time = current_time
-                return True
-        return False
+    def attack(self, survivor):
+        self.show_sword = True
+        self.sword_timer = self.sword_duration
+        hitbox = self.get_attack_hitbox()
+        survivor_rect = survivor.rect
+        if hitbox.colliderect(survivor_rect):
+            return True  # Acertou
+        return False  # Errou
+
+    
+    def get_attack_hitbox(self):
+    
+        direction = self.direction if self.direction.length() > 0 else pygame.Vector2(1, 0)  # padrão direita
+        direction = direction.normalize()
+        hitbox_length = 40  # distância à frente
+        hitbox_width = 30  # largura da hitbox
+        # Calcula o centro da hitbox
+        hitbox_center = pygame.Vector2(self.x, self.y) + direction * (self.radius + hitbox_length / 2)
+        hitbox_rect = pygame.Rect(0, 0, hitbox_length, hitbox_width)
+        hitbox_rect.center = hitbox_center
+        return hitbox_rect
+
+
 
     def grab_survivor(self, survivor):
         distance = math.hypot(survivor.x - self.x, survivor.y - self.y)
@@ -86,6 +107,15 @@ class Killer(Character):
             return True
         return False
     
+    def update(self):
+        super().update()
+        if self.sword_timer > 0:
+            self.sword_timer -= 1
+        else:
+            self.show_sword = False
+
+
+
     def distance(self, other):
         return math.hypot(other.x - self.x, other.y - self.y)
 
